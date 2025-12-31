@@ -38,6 +38,9 @@ jobs:
             libgbm1 \
             libgtk-3-0 || true
 
+      - name: Build app for E2E
+        run: pnpm build
+
       - name: Install Playwright Browsers
         run: pnpm exec playwright install
 

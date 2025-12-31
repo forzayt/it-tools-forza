@@ -1,4 +1,4 @@
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer'
 import { describe, expect, it } from 'vitest';
 import { obfuscateJavascript } from './javascript-obfuscator.service';
 

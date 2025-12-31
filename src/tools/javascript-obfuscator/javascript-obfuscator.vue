@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { useCopy } from '@/composable/copy';
-import { useObfuscateJavascript } from './javascript-obfuscator.service';
+import { useObfuscateJavascript } from './javascript-obfuscator.service'
+import { useCopy } from '@/composable/copy'
+
 
 const code = ref(`function greet(name) {
   console.log('Hello ' + name);

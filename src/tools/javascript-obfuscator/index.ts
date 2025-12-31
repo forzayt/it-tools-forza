@@ -10,4 +10,3 @@ export const tool = defineTool({
   icon: Lock,
   createdAt: new Date('2025-12-31'),
 });
-

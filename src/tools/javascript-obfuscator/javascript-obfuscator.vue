@@ -1,103 +1,6 @@
-<template>
-  <div class="obfuscator-container">
-    <!-- Hero Section -->
-    <div class="hero-section">
-      <div class="hero-content">
-        <div class="icon-wrapper">
-          <svg class="hero-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-          </svg>
-        </div>
-        <h1 class="hero-title">JavaScript Obfuscator</h1>
-        <p class="hero-subtitle">Transform your code with advanced protection techniques</p>
-      </div>
-    </div>
-
-    <!-- Main Card -->
-    <div class="main-card">
-      <!-- Input Section -->
-      <div class="input-section">
-        <label class="input-label">
-          <span class="label-text">Source Code</span>
-          <span class="char-count">{{ code.length }} characters</span>
-        </label>
-        
-        <div class="textarea-wrapper">
-          <c-input-text 
-            v-model:value="code" 
-            raw-text 
-            placeholder="// Enter your JavaScript code here&#10;function example() {&#10;  console.log('Hello World');&#10;}"
-            clearable 
-            multiline 
-            class="code-input"
-          />
-        </div>
-      </div>
-
-      <!-- Controls Bar -->
-      <div class="controls-bar">
-        <div class="method-selector">
-          <label class="control-label">
-            <svg class="control-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            </svg>
-            Obfuscation Method
-          </label>
-          <select v-model="method" class="method-select">
-            <option value="base64">🔐 Base64 Encoding</option>
-            <option value="rot13">🔄 ROT13 Cipher</option>
-          </select>
-        </div>
-
-        <div class="action-buttons">
-          <c-button @click="copy()" :ghost="!copied" class="action-btn copy-btn">
-            <svg v-if="!copied" class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            </svg>
-            <svg v-else class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            </svg>
-            {{ copied ? 'Copied!' : 'Copy' }}
-          </c-button>
-
-          <c-button @click="download()" class="action-btn download-btn">
-            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            </svg>
-            Download
-          </c-button>
-        </div>
-      </div>
-
-      <!-- Output Section -->
-      <div v-if="obfuscated" class="output-section">
-        <label class="output-label">
-          <span class="label-text">Obfuscated Output</span>
-          <span class="badge">{{ method === 'base64' ? 'Base64' : 'ROT13' }}</span>
-        </label>
-        
-        <c-card class="output-card">
-          <div class="output-content">
-            <pre class="output-code">{{ obfuscated }}</pre>
-          </div>
-        </c-card>
-      </div>
-
-      <!-- Empty State -->
-      <div v-else class="empty-state">
-        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-        </svg>
-        <p class="empty-text">Your obfuscated code will appear here</p>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { useObfuscateJavascript } from './javascript-obfuscator.service';
 import { useCopy } from '@/composable/copy';
+import { useObfuscateJavascript } from './javascript-obfuscator.service';
 
 const code = ref(`function greet(name) {
   console.log('Hello ' + name);
@@ -127,6 +30,204 @@ function download() {
   URL.revokeObjectURL(url);
 }
 </script>
+
+<template>
+  <div class="obfuscator-container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <div class="icon-wrapper">
+          <svg
+            class="hero-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </div>
+        <h1 class="hero-title">
+          JavaScript Obfuscator
+        </h1>
+        <p class="hero-subtitle">
+          Transform your code with advanced protection techniques
+        </p>
+      </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="main-card">
+      <!-- Input Section -->
+      <div class="input-section">
+        <label class="input-label">
+          <span class="label-text">
+            Source Code
+          </span>
+          <span class="char-count">
+            {{ code.length }} characters
+          </span>
+        </label>
+
+        <div class="textarea-wrapper">
+          <c-input-text
+            v-model:value="code"
+            raw-text
+            placeholder="// Enter your JavaScript code here&#10;function example() {&#10;  console.log('Hello World');&#10;}"
+            clearable
+            multiline
+            class="code-input"
+          />
+        </div>
+      </div>
+
+      <!-- Controls Bar -->
+      <div class="controls-bar">
+        <div class="method-selector">
+          <label class="control-label">
+            <svg
+              class="control-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+              <path
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
+            Obfuscation Method
+          </label>
+          <select
+            v-model="method"
+            class="method-select"
+          >
+            <option value="base64">
+              🔐 Base64 Encoding
+            </option>
+            <option value="rot13">
+              🔄 ROT13 Cipher
+            </option>
+          </select>
+        </div>
+
+        <div class="action-buttons">
+          <c-button
+            :ghost="!copied"
+            class="action-btn copy-btn"
+            @click="copy()"
+          >
+            <svg
+              v-if="!copied"
+              class="btn-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
+            <svg
+              v-else
+              class="btn-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                d="M5 13l4 4L19 7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
+            {{ copied ? 'Copied!' : 'Copy' }}
+          </c-button>
+
+          <c-button
+            class="action-btn download-btn"
+            @click="download()"
+          >
+            <svg
+              class="btn-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
+            Download
+          </c-button>
+        </div>
+      </div>
+
+      <!-- Output Section -->
+      <div
+        v-if="obfuscated"
+        class="output-section"
+      >
+        <label class="output-label">
+          <span class="label-text">
+            Obfuscated Output
+          </span>
+          <span class="badge">
+            {{ method === 'base64' ? 'Base64' : 'ROT13' }}
+          </span>
+        </label>
+
+        <c-card class="output-card">
+          <div class="output-content">
+            <pre class="output-code">{{ obfuscated }}</pre>
+          </div>
+        </c-card>
+      </div>
+
+      <!-- Empty State -->
+      <div
+        v-else
+        class="empty-state"
+      >
+        <svg
+          class="empty-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+        </svg>
+        <p class="empty-text">
+          Your obfuscated code will appear here
+        </p>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style lang="less" scoped>
 .obfuscator-container {
@@ -219,23 +320,16 @@ function download() {
 
 .textarea-wrapper {
   position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(135deg, #1C1C1C, #1C1C1C);
-    border-radius: 16px;
-    
-    
-    z-index: 0;
-  }
-  
-  &:focus-within::before {
-    opacity: 100;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s;
+
+  &:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
   }
 }
-
 
 .code-input {
   position: relative;
@@ -244,13 +338,13 @@ function download() {
   font-size: 14px;
   border-radius: 14px;
   transition: all 0.3s;
-  
+
   :deep(textarea) {
     min-height: 300px;
     background: #f8fafc;
     border: 2px solid #e2e8f0;
     color: #1e293b;
-    
+
     &:focus {
       background: white;
       border-color: transparent;
@@ -300,11 +394,11 @@ function download() {
   color: #1e293b;
   cursor: pointer;
   transition: all 0.2s;
-  
+
   &:hover {
     border-color: #667eea;
   }
-  
+
   &:focus {
     outline: none;
     border-color: #667eea;
@@ -338,7 +432,7 @@ function download() {
 .copy-btn {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
@@ -348,7 +442,7 @@ function download() {
 .download-btn {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
@@ -436,23 +530,23 @@ function download() {
   .obfuscator-container {
     padding: 24px 16px;
   }
-  
+
   .main-card {
     padding: 24px;
   }
-  
+
   .hero-title {
     font-size: 32px;
   }
-  
+
   .controls-bar {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .action-buttons {
     width: 100%;
-    
+
     button {
       flex: 1;
     }

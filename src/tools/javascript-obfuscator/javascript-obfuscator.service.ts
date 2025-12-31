@@ -1,5 +1,5 @@
 import { get } from '@vueuse/core';
-import { type MaybeRef, computed } from 'vue';
+import { computed, type MaybeRef } from 'vue';
 
 export { obfuscateJavascript, useObfuscateJavascript };
 
@@ -9,11 +9,13 @@ function base64Encode(str: string) {
 }
 
 function rot13Encode(str: string) {
-  return str.replace(/[A-Za-z]/g, (c) => String.fromCharCode((c <= 'Z' ? 65 : 97) + ((c.charCodeAt(0) - (c <= 'Z' ? 65 : 97) + 13) % 26)));
+  return str.replace(/[A-Za-z]/g, c => String.fromCharCode((c <= 'Z' ? 65 : 97) + ((c.charCodeAt(0) - (c <= 'Z' ? 65 : 97) + 13) % 26)));
 }
 
 function obfuscateJavascript(code: string, method: 'base64' | 'rot13' = 'base64'): string {
-  if (!code) return '';
+  if (!code) {
+    return '';
+  }
 
   if (method === 'base64') {
     const b = base64Encode(code);

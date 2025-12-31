@@ -1,5 +1,5 @@
 import { get } from '@vueuse/core';
-import { computed, type Ref, type MaybeRef } from 'vue'
+import { computed, type MaybeRef } from 'vue';
 
 export { obfuscateJavascript, useObfuscateJavascript };
 
